@@ -1,0 +1,44 @@
+TITLE:: DbFaderWarp
+summary:: specification of a Decibel shape for a mapping of numerical input
+related:: Classes/Control, Classes/Spec, Classes/ControlSpec, Classes/Warp
+categories:: ControlSpec, Spec, Warp
+
+description::
+This is a subclass of link::Classes/Warp:: that conforms a number to its equivalent along a shaped slope. In this particular case, this is a Decibel curve. Originating in 1924 with the Bell Lab measurement for signal loss in telegraph lines, the Decibel is a common unit for determining perceivable degrees of volume, and as such is a particularly effective scale for mapping audio faders.
+
+Example:
+
+code::
+//plot of decibel
+
+(
+d = \db.asWarp;
+x=d.map((0.0, 0.1..1));
+x.plot("decibel", Rect(0, 300, 200, 200));
+);
+(
+//decibel on the right, linear on the left.
+w=Window.new("slider", Rect(0, 1200, 150, 200)).front;
+b = NumberBox(w, Rect(0, 20, 40, 20));
+c = NumberBox(w, Rect(100, 20 , 40, 20));
+d = DbFaderWarp(ControlSpec(0.0, 1.0));
+a = Slider(w, Rect(50, 20, 40, 130))
+    .action_({
+	b.value_(d.map(a.value));
+	 c.value_(a.value);
+        });
+a.action.value;
+
+);
+::
+
+CLASSMETHODS::
+
+
+INSTANCEMETHODS::
+
+METHOD:: map
+argument:: value
+
+METHOD:: unmap
+argument:: value
